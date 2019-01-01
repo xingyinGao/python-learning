@@ -119,8 +119,8 @@ class RegressionTree(object):
             split_right_loc=np.where(feature_col>=split_xpoint)[0]
             split_right_yset=feature_label[split_right_loc]
             
-            mse_left=(split_left_yset**2).mean()-((split_left_yset).mean())**2
-            mse_right=(split_right_yset**2).mean()-((split_right_yset).mean()**2)
+            mse_left=(split_left_yset**2).sum()-(split_left_yset.sum()**2).mean()
+            mse_right=(split_right_yset**2).sum()-(split_right_yset.sum()**2).mean()
             mse=mse_left+mse_right
             split_yset_loc=[split_left_loc,split_right_loc]
             mse_all.append([mse,split_xpoint,split_yset_loc])
@@ -189,8 +189,8 @@ class RegressionTree(object):
             nd.split=feature_par[1]
             nd.feature=feature_par[3]
             
-            nd.left=Node(y[feature_par[2][0]].mean())
-            nd.right=Node(y[feature_par[2][1]].mean())
+            nd.left=Node(y[index][feature_par[2][0]].mean())
+            nd.right=Node(y[index][feature_par[2][1]].mean())
             
             que.append([depth+1,nd.left,feature_par[2][0]])
             que.append([depth+1,nd.right,feature_par[2][1]])
