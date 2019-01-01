@@ -220,6 +220,8 @@ class RegressionTree(object):
         self.rules[1]='>'
         self.rules_get(root.right)
         
+    def rules_print(self):
+        rules_get(self.root)
        
     def predict_sin(self,samp_pred):
         """
@@ -247,8 +249,6 @@ class RegressionTree(object):
         """
         samps=[samp_pred[i,:] for i in range(samp_pred.shape[0])]
         self.res=list(map(self.predict_sin,samps))
-        
-#        return self.res
     
     def error_cal(self,y):        
         """
@@ -264,3 +264,24 @@ class RegressionTree(object):
         self.error=(right_loc==0).sum()/len(y)
         self.bias=np.abs(np.array(self.res)-real_y).mean()/real_y.mean()
         self.r2=np.corrcoef(self.res,real_y)
+        
+        
+###当前路径下自定义python内置数据集加载函数
+from load_data_pyself import load_data_pyself
+###当前路径下自定义数据集分割函数
+from datasets_split import Random_split
+
+if __name__=='__main__':
+    
+    data=load_data_pyself(key='iris').data###取数据
+    label=load_data_pyself(key='iris').target###取标签
+    rt=RegressionTree()###回归树实例化
+    split_sets=Random_split(data,label,size=0.7)###数据及标签分割
+    
+    rt.fit(split_sets[0],split_sets[2],depth_max=2)##回归树训练
+    rt.predict_multi(split_sets[1])###预测
+    rt.error_cal(split_sets[-1])###结果质量评价指标计算
+    rt.rules_print()###打印规则
+    rt.r2###相关系数
+    rt.error###当标签为整型数据时，预测正确率
+    rt.bias###预测偏差
