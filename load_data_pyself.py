@@ -1,6 +1,6 @@
 from sklearn import datasets
 
-def load_data_python(key='iris'):
+def load_data_pyself(key='iris'):
     """
     #python自带数据集加载：
     #      iris：鸢尾花数据集；
