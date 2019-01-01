@@ -256,11 +256,11 @@ class RegressionTree(object):
         #输入为测试样本标签;
         #调用方式:rt=RegressionTree();rt.error_cal(test_label);
         #查看准确率：rt.error;
-        #查看预测偏差：rt.bias;
+        #查看预测偏差：rt.bias,为平均偏差，相对于真实平均值的百分比;
         """
         res_pre=np.ceil(np.array(self.res))
         real_y=y
         right_loc=res_pre-real_y
         self.error=(right_loc==0).sum()/len(y)
-        self.bias=np.abs(np.array(self.res)-real_y).mean()
+        self.bias=np.abs(np.array(self.res)-real_y).mean()/real_y.mean()
         self.r2=np.corrcoef(self.res,real_y)
